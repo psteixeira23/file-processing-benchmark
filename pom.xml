@@ -16,6 +16,9 @@
     <maven.compiler.release>${java.version}</maven.compiler.release>
 
     <junit.jupiter.version>5.10.2</junit.jupiter.version>
+    <surefire.version>3.2.5</surefire.version>
+    <jacoco.version>0.8.12</jacoco.version>
+    <checkstyle.version>3.3.1</checkstyle.version>
 
     <!-- SonarCloud -->
     <sonar.projectKey>psteixeira23_file-processing-benchmark</sonar.projectKey>
@@ -52,7 +55,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version>
+        <version>${surefire.version}</version>
         <configuration>
           <useModulePath>false</useModulePath>
         </configuration>
@@ -62,7 +65,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version>
+        <version>${jacoco.version}</version>
         <executions>
 
           <execution>
@@ -115,7 +118,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>${checkstyle.version}</version>
         <executions>
           <execution>
             <id>validate-style</id>
