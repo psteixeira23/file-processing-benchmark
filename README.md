@@ -1,5 +1,10 @@
 # File Processing Benchmark (Java 21)
 
+![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=psteixeira23_file-processing-benchmark&metric=alert_status)
+![Coverage](https://sonarcloud.io/api/project_badges/measure?project=psteixeira23_file-processing-benchmark&metric=coverage)
+![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=psteixeira23_file-processing-benchmark&metric=sqale_rating)
+![Reliability](https://sonarcloud.io/api/project_badges/measure?project=psteixeira23_file-processing-benchmark&metric=reliability_rating)
+
 ## Overview
 
 This project benchmarks multiple strategies for reading and processing large CSV files
