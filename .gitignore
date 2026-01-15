@@ -1,0 +1,44 @@
+# ---- System & Editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# ---- Build ----
+target/
+build/
+out/
+node_modules/
+dist/
+
+# ---- Logs ----
+*.log
+*.log.*
+hs_err_pid*
+
+# ---- Maven ----
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ---- Coverage & Reports ----
+jacoco.exec
+coverage/
+target/site/
+target/site/jacoco/
+reports/*
+!reports/benchmark-report.html
+
+# ---- Temporary files ----
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ---- OS-specific ----
+._*
+.Spotlight-V100
+.Trashes
+
+# ---- Misc ----
+dependency-reduced-pom.xml

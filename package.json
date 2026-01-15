@@ -1,0 +1,32 @@
+{
+  "name": "file-processing-benchmark",
+  "version": "1.0.0",
+  "description": "Java project template with Maven, JaCoCo, Checkstyle, Commitizen and Conventional Commits",
+  "main": "index.js",
+  "scripts": {
+    "commit": "cz",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/psteixeira23/file-processing-benchmark.git"
+  },
+  "keywords": ["java", "template", "maven", "commitizen", "conventional-commits", "ci"],
+  "author": "Patrick Teixeira",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/psteixeira23/file-processing-benchmark/issues"
+  },
+  "homepage": "https://github.com/psteixeira23/file-processing-benchmark#readme",
+  "devDependencies": {
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
