@@ -39,12 +39,24 @@ public final class App {
 
         Charset charset = StandardCharsets.UTF_8;
         ProcessingMode mode = null;
+        int runs = 5;
         for (int i = 1; i < args.length; i++) {
             String arg = args[i];
             if (arg.startsWith("--mode=")) {
                 mode = ProcessingMode.fromLabel(arg.substring("--mode=".length()));
                 if (mode == null) {
                     LOGGER.log(Level.WARNING, "Unknown mode: {0}", arg);
+                    return;
+                }
+            } else if (arg.startsWith("--runs=")) {
+                try {
+                    runs = Integer.parseInt(arg.substring("--runs=".length()));
+                } catch (NumberFormatException ex) {
+                    LOGGER.log(Level.WARNING, "Invalid runs value: {0}", arg);
+                    return;
+                }
+                if (runs < 1) {
+                    LOGGER.log(Level.WARNING, "Runs must be at least 1: {0}", runs);
                     return;
                 }
             } else if (arg.startsWith("--charset=")) {
@@ -67,28 +79,33 @@ public final class App {
                 new RuntimeMemoryMeter()
         );
 
-        List<BenchmarkReport> reports = new ArrayList<>();
-        if (mode == null) {
-            reports.add(runner.run(path, charset, ProcessingMode.SINGLE_PASS));
-            reports.add(runner.run(path, charset, ProcessingMode.ISOLATED));
-        } else {
-            reports.add(runner.run(path, charset, mode));
+        List<List<BenchmarkReport>> runsOutput = new ArrayList<>();
+        for (int i = 0; i < runs; i++) {
+            List<BenchmarkReport> reports = new ArrayList<>();
+            if (mode == null) {
+                reports.add(runner.run(path, charset, ProcessingMode.SINGLE_PASS));
+                reports.add(runner.run(path, charset, ProcessingMode.ISOLATED));
+            } else {
+                reports.add(runner.run(path, charset, mode));
+            }
+            runsOutput.add(reports);
         }
 
-        new ConsoleReportPrinter().print(reports);
-        writeHtmlReport(reports);
+        List<BenchmarkReport> lastRun = runsOutput.get(runsOutput.size() - 1);
+        new ConsoleReportPrinter().print(lastRun);
+        writeHtmlReport(runsOutput);
     }
 
     private static void printUsage() {
-        LOGGER.info("Usage: com.patrick.benchmark.App <file> [--mode=single|isolated] [--charset=UTF-8]");
-        LOGGER.info("Example: com.patrick.benchmark.App ./src/main/resources/benchmark-input.csv --mode=isolated");
+        LOGGER.info("Usage: com.patrick.benchmark.App <file> [--mode=single|isolated] [--charset=UTF-8] [--runs=5]");
+        LOGGER.info("Example: com.patrick.benchmark.App ./src/main/resources/benchmark-input.csv --mode=isolated --runs=5");
     }
 
-    private static void writeHtmlReport(List<BenchmarkReport> reports) {
+    private static void writeHtmlReport(List<List<BenchmarkReport>> runs) {
         HtmlReportWriter writer = new HtmlReportWriter();
         Path outputPath = Path.of("reports", "benchmark-report.html");
         try {
-            writer.write(reports, outputPath);
+            writer.writeAggregated(runs, outputPath);
         } catch (Exception ex) {
             LOGGER.log(Level.WARNING, "Failed to write HTML report: {0}", ex.getMessage());
         }

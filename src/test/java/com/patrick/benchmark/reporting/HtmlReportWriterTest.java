@@ -62,4 +62,24 @@ class HtmlReportWriterTest {
         escape.setAccessible(true);
         assertEquals("", escape.invoke(writer, new Object[] { null }));
     }
+
+    @Test
+    void shouldWriteAggregatedHtmlReport() throws Exception {
+        ScenarioReport scenarioRun1 = new ScenarioReport("Total Records", 10_000_000L, 3L, Map.of());
+        ScenarioReport scenarioRun2 = new ScenarioReport("Total Records", 20_000_000L, 3L, Map.of());
+        ProcessingSummary summaryRun1 = new ProcessingSummary(3L, 0L, List.of(scenarioRun1));
+        ProcessingSummary summaryRun2 = new ProcessingSummary(3L, 0L, List.of(scenarioRun2));
+        BenchmarkResult resultRun1 = new BenchmarkResult("Test", 10_000_000L, 2048L, summaryRun1, 0L, null);
+        BenchmarkResult resultRun2 = new BenchmarkResult("Test", 20_000_000L, 4096L, summaryRun2, 0L, null);
+        BenchmarkReport reportRun1 = new BenchmarkReport(ProcessingMode.SINGLE_PASS, List.of(resultRun1));
+        BenchmarkReport reportRun2 = new BenchmarkReport(ProcessingMode.SINGLE_PASS, List.of(resultRun2));
+
+        HtmlReportWriter writer = new HtmlReportWriter();
+        Path output = tempDir.resolve("report-aggregate.html");
+        writer.writeAggregated(List.of(List.of(reportRun1), List.of(reportRun2)), output);
+
+        String content = Files.readString(output, StandardCharsets.UTF_8);
+        assertTrue(content.contains("Runs: 2"));
+        assertTrue(content.contains("+/-"));
+    }
 }
